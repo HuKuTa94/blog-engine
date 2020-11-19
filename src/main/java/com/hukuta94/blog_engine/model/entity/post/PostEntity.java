@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class-entity of posts for the table in the database
+ * @autor Nikita Koshelev aka HuKuTa94
+ * @version 1.0
+ */
 @Entity
 @Table( name = "posts" )
 @Data
@@ -25,23 +30,38 @@ public class PostEntity
     @Column( name = "id" )
     private int id;
 
+    /**
+     * publication is hidden or active: 0 or 1
+     */
     @NonNull
     @Column( name = "is_active" )
     private int isActive;
 
+    /**
+     * moderation status, default value "NEW"
+     */
     @NonNull
     @Enumerated( EnumType.STRING )
     @Column( name = "moderation_status" )
     private ModerationStatus moderationStatus = ModerationStatus.NEW;
 
+    /**
+     * moderator user id  who made the decision, or NULL
+     */
     @Column( name = "moderator_id" )
     private int moderatorId;
 
+    /**
+     * author's post
+     */
     @NonNull
     @ManyToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY )
     @JoinColumn( name = " user_id" )
     private UserEntity user;
 
+    /**
+     * date and time the post was published
+     */
     @NonNull
     @Column( name = "time" )
     private LocalDateTime time;
@@ -58,12 +78,18 @@ public class PostEntity
     @Column( name = "view_count" )
     private int viewCount;
 
+    /**
+     * tags of the post
+     */
     @ManyToMany
     @JoinTable( name="tag2post",
             joinColumns = @JoinColumn( name = "post_id" ),
             inverseJoinColumns = @JoinColumn( name = "tag_id" ))
     private List<TagEntity> tags;
 
+    /**
+     * like/dislikes of the post
+     */
     @OneToMany( mappedBy = "post", fetch = FetchType.LAZY )
     private Collection<VoteEntity> votes;
 }

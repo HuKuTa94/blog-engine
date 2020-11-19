@@ -9,6 +9,11 @@ import org.springframework.lang.NonNull;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Class-entity of likes / dislikes for the table in the database
+ * @autor Nikita Koshelev aka HuKuTa94
+ * @version 1.0
+ */
 @Entity
 @Table( name = "post_votes" )
 @Data
@@ -22,11 +27,17 @@ public class VoteEntity
     @Column( name = "id" )
     private int id;
 
+    /**
+     * the user who put a like / dislike
+     */
     @NonNull
     @ManyToOne( cascade = CascadeType.ALL )
     @JoinColumn( name = "user_id" )
     private UserEntity user;
 
+    /**
+     * post that has been liked / disliked
+     */
     @NonNull
     @ManyToOne( cascade = CascadeType.ALL )
     @JoinColumn( name = "post_id" )
@@ -36,6 +47,9 @@ public class VoteEntity
     @Column( name = "time" )
     private LocalDateTime time;
 
+    /**
+     * like or dislike: 1 or -1
+     */
     @NonNull
     @Column( name = "value" )
     private byte value;

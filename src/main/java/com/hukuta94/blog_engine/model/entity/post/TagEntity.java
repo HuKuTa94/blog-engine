@@ -8,6 +8,11 @@ import org.springframework.lang.NonNull;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Class-entity of tags for the table in the database
+ * @autor Nikita Koshelev aka HuKuTa94
+ * @version 1.0
+ */
 @Entity
 @Table(name = "tags")
 @Data
@@ -21,10 +26,16 @@ public class TagEntity
     @Column( name = "id" )
     private int id;
 
+    /**
+     * text of the tag
+     */
     @NonNull
     @Column( name = "name" )
     private String name;
 
+    /**
+     * posts that using this tag
+     */
     @NonNull
     @ManyToMany
     @JoinTable( name="tag2post",

@@ -4,7 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * обрабатывает обычные запросы не через API (главная страница - /, в частности)
+ * Class-controller processes default requests not via the API (home page -/, in particular)
+ * @autor Nikita Koshelev aka HuKuTa94
  */
 
 @Controller
