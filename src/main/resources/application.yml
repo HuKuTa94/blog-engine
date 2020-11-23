@@ -1,3 +1,10 @@
+blog:
+    title: DevPub
+    subtitle: Рассказы разработчиков
+    phone: +7 903 666-44-55
+    email: mail@mail.ru
+    copyright: Дмитрий Сергеев
+    copyright-from: 2005
 server.port: 8000
 spring:
     datasource:
