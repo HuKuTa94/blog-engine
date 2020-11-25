@@ -92,4 +92,10 @@ public class PostEntity
      */
     @OneToMany( mappedBy = "post", fetch = FetchType.LAZY )
     private Collection<VoteEntity> votes;
+
+    /**
+     * comments of the post
+     */
+    @OneToMany( mappedBy = "post", fetch = FetchType.LAZY )
+    private List<CommentEntity> comments;
 }
