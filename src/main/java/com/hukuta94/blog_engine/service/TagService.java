@@ -2,7 +2,7 @@ package com.hukuta94.blog_engine.service;
 
 import com.hukuta94.blog_engine.api.response.TagResponse;
 import com.hukuta94.blog_engine.model.entity.post.TagEntity;
-import com.hukuta94.blog_engine.model.tag.TagDto;
+import com.hukuta94.blog_engine.model.dto.TagDto;
 import com.hukuta94.blog_engine.repository.PostRepository;
 import com.hukuta94.blog_engine.repository.TagRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service for processing tag API requests
+ * Service for processing /api/tag/* requests
  * @autor Nikita Koshelev aka HuKuTa94
  * @version 1.0
  */

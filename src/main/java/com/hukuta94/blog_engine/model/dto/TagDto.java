@@ -1,4 +1,4 @@
-package com.hukuta94.blog_engine.model.tag;
+package com.hukuta94.blog_engine.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
