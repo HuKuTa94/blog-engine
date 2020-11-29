@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Repository of the posts with custom SQL requests
  * @autor Nikita Koshelev aka HuKuTa94
@@ -72,4 +74,8 @@ public interface PostOnMainPageRepository extends PagingAndSortingRepository<Pos
             """,
             nativeQuery = true )
     long countOfBestPosts();
+
+
+    // Find by id
+    Optional<PostEntity> findById(int id );
 }

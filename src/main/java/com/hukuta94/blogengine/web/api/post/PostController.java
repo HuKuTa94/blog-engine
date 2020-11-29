@@ -1,5 +1,6 @@
 package com.hukuta94.blogengine.web.api.post;
 
+import com.hukuta94.blogengine.domain.post.model.PostByIdResultDto;
 import com.hukuta94.blogengine.domain.post.model.PostOnMainPageResultDto;
 import com.hukuta94.blogengine.dao.post.service.PostOnMainPageService;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class PostController
     }
 
     @GetMapping ("/post/{id}" )
-    public ResponseEntity getPostById( @PathVariable( "id") int id ) {
-        return ResponseEntity.of( service.getPostById( id ));
+    public ResponseEntity<PostByIdResultDto> getPostById(@PathVariable( "id") int id ) {
+        return service.getPostById( id );
     }
 }
