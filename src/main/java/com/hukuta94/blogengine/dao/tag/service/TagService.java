@@ -3,7 +3,7 @@ package com.hukuta94.blogengine.dao.tag.service;
 import com.hukuta94.blogengine.domain.tag.model.TagResultDto;
 import com.hukuta94.blogengine.dao.tag.entity.TagEntity;
 import com.hukuta94.blogengine.domain.tag.model.TagDto;
-import com.hukuta94.blogengine.dao.post.repository.PostOnMainPageRepository;
+import com.hukuta94.blogengine.dao.post.repository.MultiPostRepository;
 import com.hukuta94.blogengine.dao.tag.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.List;
 public class TagService
 {
     private final TagRepository tagRepository;
-    private final PostOnMainPageRepository postsOnMainPageRepository;
+    private final MultiPostRepository postsOnMainPageRepository;
 
     public TagResultDto getTags() {
         long postTotalCount = postsOnMainPageRepository.count();

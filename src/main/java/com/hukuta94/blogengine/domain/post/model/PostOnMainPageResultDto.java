@@ -2,6 +2,7 @@ package com.hukuta94.blogengine.domain.post.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class PostOnMainPageResultDto {
+@NoArgsConstructor
+public class PostOnMainPageResultDto
+{
     private long count;
     private List<PostOnMainPageDto> posts;
 }

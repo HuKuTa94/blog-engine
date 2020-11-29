@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostOnMainPageDto {
+public class PostOnMainPageDto
+{
     private int id;
     private long timestamp;
     private String title;
