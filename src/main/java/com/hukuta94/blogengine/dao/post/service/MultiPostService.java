@@ -151,6 +151,7 @@ public class MultiPostService extends PostService
 
             // Get timestamp in seconds
             long timestamp = LocalDateTimeToLongConverter.toMinutes( post.getTime() );
+            postDto.setTimestamp( timestamp );
 
             //  Post's text
             postDto.setTitle( post.getTitle() );
