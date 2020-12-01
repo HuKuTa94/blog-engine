@@ -27,7 +27,7 @@ import java.util.List;
  * Service return list of posts and builds response object.
  * Response object contains a count of posts and list of all found posts by API request
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.0
+ * @version 1.01
  */
 
 @Service
@@ -53,12 +53,12 @@ public class MultiPostService extends PostService
 
         switch( mode ) {
             case "recent":
-                pages = getPostsSortedByDate( pageIndex, limit, Sort.Direction.DESC );
-                countOfPosts = repository.countOfPostsByDate();
+                pages = getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.DESC );
+                countOfPosts = repository.countOfPostsByAllDates();
                 break;
             case "early":
-                pages = getPostsSortedByDate( pageIndex, limit, Sort.Direction.ASC );
-                countOfPosts = repository.countOfPostsByDate();
+                pages = getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.ASC );
+                countOfPosts = repository.countOfPostsByAllDates();
                 break;
             case "popular":
                 pages = getPopularPosts( pageIndex, limit );
@@ -80,10 +80,10 @@ public class MultiPostService extends PostService
         return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
     }
 
-    private Page<PostEntity> getPostsSortedByDate( int pageIndex, int limit, Sort.Direction direction ) {
+    private Page<PostEntity> getPostsSortedByAllDates(int pageIndex, int limit, Sort.Direction direction ) {
         String sortField = "time";
         Pageable pageable = PageRequest.of( pageIndex, limit, direction, sortField );
-        return repository.findAllSortedPostsByDate( pageable );
+        return repository.findAllSortedPostsByAllDates( pageable );
     }
 
     private Page<PostEntity> getPopularPosts( int pageIndex, int limit ) {
@@ -117,6 +117,29 @@ public class MultiPostService extends PostService
 
         return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
     }
+
+    /**
+     * Find all posts by date passed in the parameters
+     * @param offset - offset from 0 for paginated displaying
+     * @param limit - number of posts to display
+     * @param date - all posts for this date
+     * @return list of posts
+     */
+    public ResponseEntity<PostOnMainPageResultDto> getPostsSortedByOneDate( int offset, int limit, String date ) {
+        long countOfPosts = repository.countOfPostsByOneDate( date );
+
+        // Total post count equals 0 if posts weren't found by request
+        if( countOfPosts == 0 ) {
+            return ResponseEntity.ok( new PostOnMainPageResultDto());
+        }
+
+        int pageIndex = getPageIndex( offset, limit );
+        Pageable pageable = PageRequest.of( pageIndex, limit );
+        Page<PostEntity> pages = repository.findAllSortedPostsByOneDate( pageable, date );
+
+        return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
+    }
+
 
     private PostOnMainPageResultDto buildResultDto( Page<PostEntity> pages, long countOfPosts ) {
         List<PostOnMainPageDto> postList = new ArrayList<>();

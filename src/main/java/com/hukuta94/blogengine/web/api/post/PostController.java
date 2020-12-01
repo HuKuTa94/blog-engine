@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Class-controller processes all requests /api/post/*
  * @autor Nikita Koshelev aka HuKuTa94
+ * @version 1.01
  */
 
 @RestController
@@ -22,7 +23,7 @@ public class PostController
     private SinglePostService singlePostService;
 
     @GetMapping( "/post" )
-    public ResponseEntity<PostOnMainPageResultDto> getPostsSortedByMode(
+    public ResponseEntity<PostOnMainPageResultDto> getPostsByMode(
             @RequestParam( value = "offset", defaultValue = "0" ) int offset,
             @RequestParam( value = "limit", defaultValue = "10" ) int limit,
             @RequestParam( value = "mode" ) String mode
@@ -37,6 +38,15 @@ public class PostController
             @RequestParam( value = "tag" ) String tag
     ) {
         return multiPostService.getPostsByTag( offset, limit, tag );
+    }
+
+    @GetMapping( "/post/byDate" )
+    public ResponseEntity<PostOnMainPageResultDto> getPostsByDate(
+            @RequestParam( value = "offset", defaultValue = "0" ) int offset,
+            @RequestParam( value = "limit", defaultValue = "10" ) int limit,
+            @RequestParam( value = "date" ) String date
+    ) {
+        return multiPostService.getPostsSortedByOneDate( offset, limit, date );
     }
 
     @GetMapping( "/post/{id}" )

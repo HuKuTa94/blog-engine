@@ -11,16 +11,16 @@ import org.springframework.stereotype.Repository;
 /**
  * Repository of multi-posts results with custom queries.
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.0
+ * @version 1.01
  */
 
 @Repository
 public interface MultiPostRepository extends PagingAndSortingRepository<PostEntity, Integer>
 {
-    // Find by date
+    // Find by all dates
     @Query( value = "SELECT * FROM posts WHERE is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) < DATE(NOW())",
             nativeQuery = true )
-    Page<PostEntity> findAllSortedPostsByDate( Pageable pageable );
+    Page<PostEntity> findAllSortedPostsByAllDates( Pageable pageable );
 
     @Query( value =
             """
@@ -28,7 +28,21 @@ public interface MultiPostRepository extends PagingAndSortingRepository<PostEnti
             WHERE is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) < DATE(NOW())
             """,
             nativeQuery = true )
-    long countOfPostsByDate();
+    long countOfPostsByAllDates();
+
+
+    // Find by one date
+    @Query( value = "SELECT * FROM posts WHERE is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) = :date",
+            nativeQuery = true )
+    Page<PostEntity> findAllSortedPostsByOneDate( Pageable pageable, @Param( "date" ) String date );
+
+    @Query( value =
+            """
+            SELECT COUNT(*) FROM posts
+            WHERE is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) = :date
+            """,
+            nativeQuery = true )
+    long countOfPostsByOneDate( @Param( "date" ) String date );
 
 
     // Find by comment count
