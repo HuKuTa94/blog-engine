@@ -1,12 +1,15 @@
 package com.hukuta94.blogengine.web.api;
 
+import com.hukuta94.blogengine.dao.post.service.CalendarStatisticsService;
 import com.hukuta94.blogengine.domain.bloginfo.model.BlogInfoDto;
+import com.hukuta94.blogengine.domain.post.model.PostCountByYearResultDto;
 import com.hukuta94.blogengine.domain.tag.model.TagResultDto;
 import com.hukuta94.blogengine.dao.globalsettings.service.GlobalSettingsService;
 import com.hukuta94.blogengine.dao.tag.service.TagService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
@@ -26,6 +29,7 @@ public class ApiGeneralController
     private final BlogInfoDto blogInfoDto;
     private final GlobalSettingsService globalSettingsService;
     private final TagService tagService;
+    private final CalendarStatisticsService calendarService;
 
     @GetMapping( "/init" )
     public BlogInfoDto getInit() {
@@ -40,5 +44,12 @@ public class ApiGeneralController
     @GetMapping( "/tag" )
     public TagResultDto getTags() {
         return tagService.getTags();
+    }
+
+    @GetMapping( "/calendar" )
+    public ResponseEntity<PostCountByYearResultDto> getPostsSortedByMode(
+            @RequestParam( value = "year", required = false ) Integer year
+    ) {
+        return ResponseEntity.ok( calendarService.countOfPostsByYear( year ));
     }
 }
