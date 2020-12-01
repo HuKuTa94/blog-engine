@@ -23,7 +23,7 @@ import java.util.*;
 @AllArgsConstructor
 public class CalendarStatisticsService
 {
-    CalendarStatisticsRepository repository;
+    private CalendarStatisticsRepository repository;
 
     public PostCountByYearResultDto countOfPostsByYear( Integer year ) {
         // Get list of years with 1 and more posts
