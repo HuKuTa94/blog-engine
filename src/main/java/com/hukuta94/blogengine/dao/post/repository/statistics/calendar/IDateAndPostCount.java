@@ -1,4 +1,4 @@
-package com.hukuta94.blogengine.dao.post.repository.calendar;
+package com.hukuta94.blogengine.dao.post.repository.statistics.calendar;
 
 /**
  * Interface-projection used by Spring JPA projections

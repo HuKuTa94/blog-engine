@@ -1,6 +1,8 @@
-package com.hukuta94.blogengine.dao.post.repository.calendar;
+package com.hukuta94.blogengine.dao.post.repository.statistics;
 
 import com.hukuta94.blogengine.dao.post.entity.PostEntity;
+import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateAndPostCount;
+import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateYear;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,14 +11,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Repository of calendar statistics with custom queries.
+ * Repository of statistics of the blog with custom queries.
  * Interface uses Spring JPA projections by with IDate* interfaces.
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.0
+ * @version 1.01
  */
 
 @Repository
-public interface CalendarStatisticsRepository extends JpaRepository<PostEntity, Integer>
+public interface StatisticsRepository extends JpaRepository<PostEntity, Integer>
 {
     // Find all posts by date (years)
     @Query( value =
@@ -26,7 +28,7 @@ public interface CalendarStatisticsRepository extends JpaRepository<PostEntity, 
             WHERE YEAR(post.time) = :year
             GROUP BY DATE_FORMAT(post.time, '%Y-%m-%d')
             """ )
-    List<IDateAndPostCount> findAllPostsByYear( @Param( "year") int year );
+    List<IDateAndPostCount> findAllPostsByYear(@Param( "year") int year );
 
     @Query( value =
             """

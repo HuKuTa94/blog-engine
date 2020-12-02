@@ -1,8 +1,8 @@
 package com.hukuta94.blogengine.dao.post.service;
 
-import com.hukuta94.blogengine.dao.post.repository.calendar.CalendarStatisticsRepository;
-import com.hukuta94.blogengine.dao.post.repository.calendar.IDateAndPostCount;
-import com.hukuta94.blogengine.dao.post.repository.calendar.IDateYear;
+import com.hukuta94.blogengine.dao.post.repository.statistics.StatisticsRepository;
+import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateAndPostCount;
+import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateYear;
 import com.hukuta94.blogengine.domain.post.model.PostCountByYearResultDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.*;
 @AllArgsConstructor
 public class CalendarStatisticsService
 {
-    private CalendarStatisticsRepository repository;
+    private StatisticsRepository repository;
 
     public PostCountByYearResultDto countOfPostsByYear( Integer year ) {
         // Get list of years with 1 and more posts
