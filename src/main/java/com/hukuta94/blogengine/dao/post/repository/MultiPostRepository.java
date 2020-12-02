@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Repository of multi-posts results with custom queries.
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.01
+ * @version 1.02
  */
 
 @Repository
@@ -107,4 +107,22 @@ public interface MultiPostRepository extends PagingAndSortingRepository<PostEnti
             """,
             nativeQuery = true )
     long countOfPostsByTag( @Param( "tagName" ) String tagName );
+
+
+    // Find all posts using search query
+    @Query( value =
+            """
+            SELECT * FROM posts
+            WHERE MATCH(title,text) AGAINST(:query) AND is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) < DATE(NOW())
+            """,
+            nativeQuery = true )
+    Page<PostEntity> findAllPostsBySearchQuery( Pageable pageable, @Param( "query") String query );
+
+    @Query( value =
+            """
+            SELECT COUNT(*) FROM posts
+            WHERE MATCH(title,text) AGAINST(:query) AND is_active = 1 AND moderation_status = 'ACCEPTED' AND DATE(time) < DATE(NOW())
+            """,
+            nativeQuery = true )
+    long countOfPostsBySearchQuery( @Param( "query") String query );
 }

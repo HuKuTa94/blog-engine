@@ -27,7 +27,7 @@ import java.util.List;
  * Service return list of posts and builds response object.
  * Response object contains a count of posts and list of all found posts by API request
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.01
+ * @version 1.02
  */
 
 @Service
@@ -38,6 +38,14 @@ public class MultiPostService extends PostService
     private static final int ANNOUNCE_TEXT_LENGTH = 200;
     private MultiPostRepository repository;
 
+
+    /**
+     * This method used to create an empty response if service can't found a posts
+     * @return empty result DTO
+     */
+    private PostOnMainPageResultDto createEmptyResponse() {
+        return new PostOnMainPageResultDto( 0, new ArrayList<>( 0 ));
+    }
 
     /** Find all posts by the sorting mode passed in the parameters
      * @param offset - offset from 0 for paginated displaying
@@ -74,7 +82,7 @@ public class MultiPostService extends PostService
 
         // Total post count equals 0 if posts weren't found by request
         if( countOfPosts == 0 ) {
-            return ResponseEntity.ok( new PostOnMainPageResultDto());
+            return ResponseEntity.ok( createEmptyResponse() );
         }
 
         return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
@@ -108,7 +116,7 @@ public class MultiPostService extends PostService
 
         // Total post count equals 0 if posts weren't found by request
         if( countOfPosts == 0 ) {
-            return ResponseEntity.ok( new PostOnMainPageResultDto());
+            return ResponseEntity.ok( createEmptyResponse() );
         }
 
         int pageIndex = getPageIndex( offset, limit );
@@ -130,12 +138,27 @@ public class MultiPostService extends PostService
 
         // Total post count equals 0 if posts weren't found by request
         if( countOfPosts == 0 ) {
-            return ResponseEntity.ok( new PostOnMainPageResultDto());
+            return ResponseEntity.ok( createEmptyResponse() );
         }
 
         int pageIndex = getPageIndex( offset, limit );
         Pageable pageable = PageRequest.of( pageIndex, limit );
         Page<PostEntity> pages = repository.findAllSortedPostsByOneDate( pageable, date );
+
+        return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
+    }
+
+    public ResponseEntity<PostOnMainPageResultDto> getPostsBySearchQuery( int offset, int limit, String query ) {
+        long countOfPosts = repository.countOfPostsBySearchQuery( query );
+
+        // Total post count equals 0 if posts weren't found by request
+        if( countOfPosts == 0 ) {
+            return ResponseEntity.ok( createEmptyResponse() );
+        }
+
+        int pageIndex = getPageIndex( offset, limit );
+        Pageable pageable = PageRequest.of( pageIndex, limit );
+        Page<PostEntity> pages = repository.findAllPostsBySearchQuery( pageable, query );
 
         return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
     }
