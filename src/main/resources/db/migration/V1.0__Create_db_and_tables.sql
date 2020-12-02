@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
     `text` TEXT NOT NULL,
     `view_count` INT NOT NULL,
     PRIMARY KEY (id),
+    FULLTEXT KEY `ft` (`title`, `text`),
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE = INNODB;
 
