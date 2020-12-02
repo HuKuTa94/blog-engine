@@ -28,7 +28,7 @@ public interface StatisticsRepository extends JpaRepository<PostEntity, Integer>
             WHERE YEAR(post.time) = :year
             GROUP BY DATE_FORMAT(post.time, '%Y-%m-%d')
             """ )
-    List<IDateAndPostCount> findAllPostsByYear(@Param( "year") int year );
+    List<IDateAndPostCount> findAllPostsByYear( @Param( "year") int year );
 
     @Query( value =
             """
@@ -37,4 +37,6 @@ public interface StatisticsRepository extends JpaRepository<PostEntity, Integer>
             GROUP BY DATE_FORMAT(post.time, '%Y')
             """ )
     List<IDateYear> findAllYearsWithPosts();
+
+
 }

@@ -21,7 +21,7 @@ import java.util.*;
 @Service
 @Transactional
 @AllArgsConstructor
-public class CalendarStatisticsService
+public class StatisticsService
 {
     private StatisticsRepository repository;
 

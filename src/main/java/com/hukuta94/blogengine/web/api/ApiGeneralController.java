@@ -1,6 +1,6 @@
 package com.hukuta94.blogengine.web.api;
 
-import com.hukuta94.blogengine.dao.post.service.CalendarStatisticsService;
+import com.hukuta94.blogengine.dao.post.service.StatisticsService;
 import com.hukuta94.blogengine.domain.bloginfo.model.BlogInfoDto;
 import com.hukuta94.blogengine.domain.post.model.PostCountByYearResultDto;
 import com.hukuta94.blogengine.domain.tag.model.TagResultDto;
@@ -29,7 +29,7 @@ public class ApiGeneralController
     private final BlogInfoDto blogInfoDto;
     private final GlobalSettingsService globalSettingsService;
     private final TagService tagService;
-    private final CalendarStatisticsService calendarService;
+    private final StatisticsService calendarService;
 
     @GetMapping( "/init" )
     public BlogInfoDto getInit() {
