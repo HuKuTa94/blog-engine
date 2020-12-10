@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Service for processing /api/tag/* requests
  * @autor Nikita Koshelev aka HuKuTa94
- * @version 1.0
+ * @version 1.01
  */
 
 @Service
@@ -24,16 +24,17 @@ import java.util.List;
 public class TagService
 {
     private final TagRepository tagRepository;
-    private final MultiPostRepository postsOnMainPageRepository;
+    private final MultiPostRepository multiPostRepository;
 
-    public TagResultDto getTags() {
-        long postTotalCount = postsOnMainPageRepository.count();
+    public TagResultDto getTags( String query ) {
+        float postTotalCount = multiPostRepository.countOfPublishedPosts();
+        List<TagEntity> tagEntities = tagRepository.findAll();
 
-        Iterable<TagEntity> iterable = tagRepository.findAll();
         List<TagDto> tags = new ArrayList<>();
-        for ( TagEntity tag : iterable )
+        for ( TagEntity tag : tagEntities )
         {
-            float tagWeight = tag.getPosts().size() / (float) postTotalCount;
+            float postCountWithTag = multiPostRepository.countOfPostsByTag( tag.getName() );
+            float tagWeight = (postCountWithTag / postTotalCount) * 2f;
             tags.add( new TagDto( tag.getName(), tagWeight ));
         }
         return new TagResultDto( tags );
