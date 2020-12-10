@@ -1,4 +1,4 @@
-package com.hukuta94.blogengine.web.api;
+package com.hukuta94.blogengine.web;
 
 import com.hukuta94.blogengine.dao.post.service.StatisticsService;
 import com.hukuta94.blogengine.domain.bloginfo.model.BlogInfoDto;

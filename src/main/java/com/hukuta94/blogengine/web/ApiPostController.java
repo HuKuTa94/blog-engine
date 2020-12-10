@@ -1,4 +1,4 @@
-package com.hukuta94.blogengine.web.api.post;
+package com.hukuta94.blogengine.web;
 
 import com.hukuta94.blogengine.dao.post.service.MultiPostService;
 import com.hukuta94.blogengine.dao.post.service.SinglePostService;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping( "/api" )
 @AllArgsConstructor
-public class PostController
+public class ApiPostController
 {
     private MultiPostService multiPostService;
     private SinglePostService singlePostService;
