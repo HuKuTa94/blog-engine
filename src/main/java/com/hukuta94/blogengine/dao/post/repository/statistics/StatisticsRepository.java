@@ -3,6 +3,7 @@ package com.hukuta94.blogengine.dao.post.repository.statistics;
 import com.hukuta94.blogengine.dao.post.entity.PostEntity;
 import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateAndPostCount;
 import com.hukuta94.blogengine.dao.post.repository.statistics.calendar.IDateYear;
+import com.hukuta94.blogengine.dao.post.repository.statistics.post.IPostStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +40,21 @@ public interface StatisticsRepository extends JpaRepository<PostEntity, Integer>
     List<IDateYear> findAllYearsWithPosts();
 
 
+    // Get statistics of all posts
+    @Query( value =
+            """
+            SELECT postsCount, viewsCount, firstPublication, likesCount, dislikesCount
+                FROM (SELECT
+                    COUNT(*) AS postsCount,
+                    SUM(view_count) AS viewsCount,
+                    MIN(time) AS firstPublication
+                    FROM posts) t1
+                JOIN
+                 (SELECT
+                    COUNT( post_votes.value > 0 ) AS likesCount,
+                    COUNT( post_votes.value < 0 ) AS dislikesCount
+                    FROM post_votes) t2
+            """,
+            nativeQuery = true )
+    IPostStatistics getPostStatistics();
 }
