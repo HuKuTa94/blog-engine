@@ -56,29 +56,15 @@ public class MultiPostService extends PostService
     public ResponseEntity<PostOnMainPageResultDto> getPostsSortedByMode( int offset, int limit, String mode ) {
         int pageIndex = getPageIndex( offset, limit );
 
-        long countOfPosts;
-        Page<PostEntity> pages;
-
-        switch( mode ) {
-            case "recent":
-                pages = getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.DESC );
-                countOfPosts = repository.countOfPostsByAllDates();
-                break;
-            case "early":
-                pages = getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.ASC );
-                countOfPosts = repository.countOfPostsByAllDates();
-                break;
-            case "popular":
-                pages = getPopularPosts( pageIndex, limit );
-                countOfPosts = repository.countOfPopularPosts();
-                break;
-            case "best":
-                pages = getBestPosts( pageIndex, limit );
-                countOfPosts = repository.countOfBestPosts();
-                break;
-            default:
-                return ResponseEntity.badRequest().build();
-        }
+        long countOfPosts = repository.countOfPublishedPosts();
+        Page<PostEntity> pages =
+            switch( mode ) {
+                case "recent" -> getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.DESC );
+                case "early" -> getPostsSortedByAllDates( pageIndex, limit, Sort.Direction.ASC );
+                case "popular" -> repository.findAllSortedPostsByComments( PageRequest.of( pageIndex, limit ));
+                case "best"    -> repository.findAllSortedPostsByLikes( PageRequest.of( pageIndex, limit ));
+                default -> throw new IllegalArgumentException(); //ResponseEntity.badRequest().build();
+        };
 
         // Total post count equals 0 if posts weren't found by request
         if( countOfPosts == 0 ) {
@@ -88,20 +74,10 @@ public class MultiPostService extends PostService
         return ResponseEntity.ok( buildResultDto( pages, countOfPosts ));
     }
 
-    private Page<PostEntity> getPostsSortedByAllDates(int pageIndex, int limit, Sort.Direction direction ) {
+    private Page<PostEntity> getPostsSortedByAllDates( int pageIndex, int limit, Sort.Direction direction ) {
         String sortField = "time";
         Pageable pageable = PageRequest.of( pageIndex, limit, direction, sortField );
         return repository.findAllSortedPostsByAllDates( pageable );
-    }
-
-    private Page<PostEntity> getPopularPosts( int pageIndex, int limit ) {
-        Pageable pageable = PageRequest.of( pageIndex, limit );
-        return repository.findAllPopularPosts( pageable );
-    }
-
-    private Page<PostEntity> getBestPosts( int pageIndex, int limit ) {
-        Pageable pageable = PageRequest.of( pageIndex, limit );
-        return repository.findAllBestPosts( pageable );
     }
 
     /**
@@ -134,7 +110,7 @@ public class MultiPostService extends PostService
      * @return list of posts
      */
     public ResponseEntity<PostOnMainPageResultDto> getPostsSortedByOneDate( int offset, int limit, String date ) {
-        long countOfPosts = repository.countOfPostsByOneDate( date );
+        long countOfPosts = repository.countOfPublishedPosts();
 
         // Total post count equals 0 if posts weren't found by request
         if( countOfPosts == 0 ) {
@@ -199,7 +175,7 @@ public class MultiPostService extends PostService
             postDto.setUser( new UserWithoutPhotoDto( user.getId(), user.getName() ));
 
             // Add dto to result list
-            postList.add(postDto);
+            postList.add( postDto );
         }
 
         return new PostOnMainPageResultDto( countOfPosts, postList );
