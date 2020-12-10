@@ -1,4 +1,4 @@
-package com.hukuta94.blog_engine;
+package com.hukuta94.blogengine;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
